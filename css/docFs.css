@@ -1,0 +1,158 @@
+/*below is for leftsider when it is clicked for extend*/
+.office-leftsider-animation-enter {
+  margin-left: -180px;
+  transition: margin-left .2s ease-in;
+}
+
+.office-leftsider-animation-enter.office-leftsider-animation-enter-active {
+  margin-left: 0;
+}
+
+.office-leftsider-animation-leave {
+  margin-left: 0;
+  transition: margin-left .2s ease-in;
+}
+
+.office-leftsider-animation-leave.office-leftsider-animation-leave-active {
+  margin-left: -180px;
+}
+/*below is for createNewBTN*/
+.office-doclist-react-grid-body-animation-enter{
+  opacity: 0.01;
+  transition: opacity .3s ease-in;
+  -webkit-transition: opacity .3s ease-in;;
+}
+.office-doclist-react-grid-body-animation-enter.office-doclist-react-grid-body-animation-enter-active{
+  opacity: 1;
+}
+.office-doclist-react-grid-body-animation-leave{
+  opacity: 1;
+  transition: opacity .3s ease-in;
+  -webkit-transition: opacity .3s ease-in;
+}
+.office-doclist-react-grid-body-animation-leave.office-doclist-react-grid-body-animation-leave-active{
+  opacity: 0.01;
+}
+
+/*below is for top bar after an item is selected*/
+.office-doclist-TDB-container-animation-enter {
+  margin-top: -64px;
+  transition: margin-top .1s ease-in;
+}
+
+.office-doclist-TDB-container-animation-enter.office-doclist-TDB-container-animation-enter-active {
+  margin-top: 0;
+}
+
+.office-doclist-TDB-container-animation-leave {
+  margin-top: 0;
+  transition: margin-top .1s ease-in;
+}
+
+.office-doclist-TDB-container-animation-leave.office-doclist-TDB-container-animation-leave-active {
+  margin-top: -64px;
+}
+
+/*below is for move popup when it is enter into a child folder*/
+.office-movebody-enter-child-animation-enter {
+  margin-left: -440px;
+  transition: margin-left .5s linear;
+}
+
+.office-movebody-enter-child-animation-enter.office-movebody-enter-child-animation-enter-active {
+  margin-left: 0;
+}
+
+.office-movebody-enter-child-animation-leave {
+  margin-left: 0;
+  transition: margin-left .5s linear;
+}
+
+.office-movebody-enter-child-animation-leave.office-movebody-enter-child-animation-leave-active {
+  margin-left: 440px;
+}
+
+/*below is for move popup when back to a parent folder*/
+.office-movebody-back-parent-animation-enter {
+  margin-left: 440px;
+  transition: margin-left .5s linear;
+}
+
+.office-movebody-back-parent-animation-enter.office-movebody-back-parent-animation-enter-active {
+  margin-left: 0;
+}
+
+.office-movebody-back-parent-animation-leave {
+  margin-left: 0;
+  transition: margin-left .5s linear;
+}
+
+.office-movebody-back-parent-animation-leave.office-movebody-back-parent-animation-leave-active {
+  margin-left: -440px;
+}
+
+
+/*below is for infinite scroll, used for the auto scroll to the new item*/
+.office-infinite-list-items-wrapper-outter {
+  /*padding: 0 10%;*/
+  /*padding: 0 64px;*/
+  padding-left:14px;
+  width:100%;
+  /*padding-right:64px;*/
+}
+
+@media (max-width: 500px) {
+.office-infinite-list-items-wrapper-outter {
+  padding: 0;
+}
+}
+
+/*below is for doclist and inbox msg extend animation*/
+.office-doclist-items-animation-enter {
+  opacity: .01;
+  transition: opacity .2s ease-in;
+}
+
+.office-doclist-items-animation-enter.office-doclist-items-animation-enter-active {
+  opacity: 1;
+}
+
+.office-doclist-items-animation-leave {
+  opacity: 0;
+  transition: opacity .01s ease-in;
+}
+
+.office-doclist-items-animation-leave.office-doclist-items-animation-leave-active {
+  opacity: 0;
+}
+
+
+.office-create-new-button-enter {
+	opacity: 0.01;
+}
+
+.office-create-new-button-enter-active {
+	opacity: 1;
+transition: all 0.3s ease-in-out 0s, visibility 0s linear 0.3s, z-index 0s linear 0.01s;
+}
+
+.office-create-new-button-test-enter {
+	opacity: 0.01;
+}
+
+.office-create-new-button-test-enter-active {
+	opacity: 1;
+transition: all 5s ease-in-out 0s, visibility 0s linear 5s, z-index 0s linear 0.01s;
+}
+
+.office-create-new-button-leave {
+	opacity: 1;
+}
+
+.office-create-new-button-leave-active {
+	opacity: 0.01;
+}
+
+
+
+
