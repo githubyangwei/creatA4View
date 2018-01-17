@@ -542,7 +542,7 @@ var A4Word = A4Word || {};
     fga = "/e/register?wechat_scan_follow=true&signup_code=";
     gga = "/e/report";
     Za = "/e/user/access?access_token=";
-    hga = "/e/us eradmin/accountlimit/";
+    hga = "/e/useradmin/accountlimit/";
     iga = "/e/useradmin/bindpage/phone/?redirect_to=";
     jga = "/e/useradmin/bindpage/phone/?redirect_to=/?jumpToDoclist=true";
     $a = "/e/useradmin/childlist/";
