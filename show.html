@@ -19,8 +19,11 @@
             padding: 77px;
             box-sizing: border-box;
             background: #fff;
-            margin: 10px auto;
+            margin: 35px auto;
             position: relative;
+        }
+        .pList:first-child{
+            margin-top: 0;
         }
         .hidePX{
             position: fixed;
@@ -56,7 +59,8 @@
     /*$('.pList:eq(0)').html(data.conetentStyle);
     console.log($('.pList:eq(0)'))*/
     var imgNum = 0;
-
+    var s=$('#eee').clone().empty().removeAttr('id');
+    $('#eee').before(s.empty().append($('#eee tr:last')))
     function loadImage(url, num) {
         var img = new Image();
         img.src = url;
