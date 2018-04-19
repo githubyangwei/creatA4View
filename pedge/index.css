@@ -1,0 +1,129 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+html,body,
+.contOuter{
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+.pedigreeConts{
+    position: absolute;
+    top:0;
+    left: 0;
+    min-width: 100%;
+    min-height: 100%;
+    box-sizing: border-box;
+    padding-top: 40px;
+    transform-origin: top left;
+}
+.LineageTitle{
+    background: #ccc;
+    position: absolute;
+    top:0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    z-index: 1050;
+    white-space:nowrap;
+}
+.LineageList{
+    height: 40px;
+    display: inline-block;
+    width: 160px;
+    line-height: 40px;
+    text-align: center;
+    color: #b4b4b4;
+    background: #f6f6f6;
+}
+.pedigreeDetail{
+    min-width: 100%;
+    min-height: 100%;
+    padding-top: 20px;
+    background: url("img/pdgBg.png");
+}
+
+.pedigreeDetail table,tr,td{
+    border: none;
+    padding: 0;
+    border-spacing: 0;
+}
+.pedigreeDetail td{
+    position: relative;
+}
+.pedigreeDetail tr>td:first-child{
+    vertical-align: top;
+}
+.pedigreeDetail tr>td:first-child:before{
+    height: 100%;
+    width: 13px;
+    border-left: 1px solid #b3b3b3;
+    border-bottom: 1px solid #b3b3b3;
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 14px;
+    left: -1px;
+}
+.pedigreeDetail tr:last-child>td:before{
+    display: none;
+}
+.pdNodeCont{
+    width: 160px;
+    min-height: 81px;
+    position: relative;
+}
+.pdNodeName input{
+    width: 83px;
+    height: 30px;
+    text-align: center;
+    border-radius: 3px;
+    border:1px solid #f2f2f2;
+}
+.pdNodeName{
+    width: 83px;
+    height: 30px;
+    background: #f2f2f2;
+    color: #333333;
+    font-size: 14px;
+    line-height: 30px;
+    margin-left: 28px;
+    text-align: center;
+    border-radius: 3px;
+}
+.pdNodeSexLive{
+    position: absolute;
+    top: 5px;
+    left: 15px;
+}
+.pdNodeOpenClose{
+    position: absolute;
+    top: 5px;
+    right: -7px;
+    z-index: 3;
+}
+.pdNodeSexLive:before{
+    position: absolute;
+    display: block;
+    content: " ";
+    height: 1px;
+    background: #b3b3b3;
+    width: 5px;
+    top: 9px;
+    left: -7px;
+}
+.rootPdNode .pdNodeSexLive:before{
+    display: none;
+}
+.pdNodeOpenClose:before{
+    position: absolute;
+    display: block;
+    content: " ";
+    height: 1px;
+    background: #b3b3b3;
+    width: 36px;
+    top: 9px;
+    left: -39px;
+}
