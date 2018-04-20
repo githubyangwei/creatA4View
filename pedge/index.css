@@ -43,6 +43,7 @@ html,body,
     min-height: 100%;
     padding-top: 20px;
     background: url("img/pdgBg.png");
+    box-sizing: border-box;
 }
 
 .pedigreeDetail table,tr,td{
@@ -75,6 +76,10 @@ html,body,
     min-height: 81px;
     position: relative;
 }
+.pdNodeCont.active .pdNodeName,.pdNodeName:hover{
+    background: #ff7926;
+    color: #fff;
+}
 .pdNodeName input{
     width: 83px;
     height: 30px;
@@ -92,6 +97,7 @@ html,body,
     margin-left: 28px;
     text-align: center;
     border-radius: 3px;
+    cursor: pointer;
 }
 .pdNodeSexLive{
     position: absolute;
