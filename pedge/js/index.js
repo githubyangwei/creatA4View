@@ -9,27 +9,28 @@ var bp = {                      //   bp====>  baseOption 缩写
     canvasHeight: 900,          //Calculation   画布绘图区域高度    计算的到
     maxYnums: 0,                 //Calculation   最大Y值
     data: "",                      //Calculation    节点数据
-    restData:"",
+    restData: "",
 };
 
 bp.data = ftt.format(baseData);
-bp.dynasty=[bp.dynasty[0],(bp.dynasty[1]+10)];
+bp.dynasty = [bp.dynasty[0], (bp.dynasty[1] + 10)];
 
-var chnNumChar = ["零","一","二","三","四","五","六","七","八","九"];
-var chnUnitSection = ["","万","亿","万亿","亿亿"];
-var chnUnitChar = ["","十","百","千"];
-function SectionToChinese(section){
+var chnNumChar = ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九"];
+var chnUnitSection = ["", "万", "亿", "万亿", "亿亿"];
+var chnUnitChar = ["", "十", "百", "千"];
+
+function SectionToChinese(section) {
     var strIns = '', chnStr = '';
     var unitPos = 0;
     var zero = true;
-    while(section > 0){
+    while (section > 0) {
         var v = section % 10;
-        if(v === 0){
-            if(!zero){
+        if (v === 0) {
+            if (!zero) {
                 zero = true;
                 chnStr = chnNumChar[v] + chnStr;
             }
-        }else{
+        } else {
             zero = false;
             strIns = chnNumChar[v];
             strIns += chnUnitChar[unitPos];
@@ -41,18 +42,18 @@ function SectionToChinese(section){
     return chnStr;
 }
 
-function NumberToChinese(num){
+function NumberToChinese(num) {
     var unitPos = 0;
     var strIns = '', chnStr = '';
     var needZero = false;
 
-    if(num === 0){
+    if (num === 0) {
         return chnNumChar[0];
     }
 
-    while(num > 0){
+    while (num > 0) {
         var section = num % 10000;
-        if(needZero){
+        if (needZero) {
             chnStr = chnNumChar[0] + chnStr;
         }
         strIns = SectionToChinese(section);
@@ -66,26 +67,28 @@ function NumberToChinese(num){
     return chnStr;
 };
 
-for(var i=bp.dynasty[0];i<bp.dynasty[1];i++){
-    $('.LineageTitle').append('<div class="LineageList">第'+NumberToChinese(i)+'代</div>');
+for (var i = bp.dynasty[0]; i < bp.dynasty[1]; i++) {
+    $('.LineageTitle').append('<div class="LineageList">第' + NumberToChinese(i) + '代</div>');
 }
-var getJson=$.tool.JsonTool.toTree(bp.data,'NODE_ID','RELATION_RELATED_ID','children');
+var getJson = $.tool.JsonTool.toTree(bp.data, 'NODE_ID', 'RELATION_RELATED_ID', 'children');
 
-getJson.sort(function(a,b){
+getJson.sort(function (a, b) {
     return a.NODE_NUMBER - b.NODE_NUMBER;
 });
 
-var nextJson=[];
-var baseLv=0;
-function insertNode(data){
-    var insertHtml='<table class="insertPd">';
-    $.each(data,function(nodeX,nodeY){
-        insertHtml+='<tr class="">'
+var nextJson = [];
+var baseLv = 0;
+
+/*插入节点*/
+function insertNode(data) {
+    var insertHtml = '<table class="insertPd">';
+    $.each(data, function (nodeX, nodeY) {
+        insertHtml += '<tr class="">'
         //当前节点信息
-        insertHtml+='<td class="rootPdNode">' +
+        insertHtml += '<td class="rootPdNode">' +
             '<div class="pdNodeCont">' +
-            '<div class="pdNodeSexLive"><img class="" src="img/men-die.png" alt=""></div>' +
-            '<div class="pdNodeName">' +nodeY.NODE_NAME+
+            '<div class="pdNodeSexLive"><img class="" src="'+(data.nodeX%2==1?'img/men.png':'img/women.png')+'" alt=""></div>' +
+            '<div class="pdNodeName">' + nodeY.NODE_NAME +
             '</div>' +
             '<div class="pdNodeMoreShow"></div>' +
             '<div class="pdNodeOpenClose">' +
@@ -96,54 +99,56 @@ function insertNode(data){
             '</div>' +
             '</td>';
         //子女节点信息
-        insertHtml+='<td class="pdNodeChild">'
-        if(!$.tool.isEmpty(nodeY.children)){
-            insertHtml+=insertNode(nodeY.children);
+        insertHtml += '<td class="pdNodeChild">'
+        if (!$.tool.isEmpty(nodeY.children)) {
+            insertHtml += insertNode(nodeY.children);
         }
-        insertHtml+='</td>'
-        insertHtml+='</tr>'
+        insertHtml += '</td>'
+        insertHtml += '</tr>'
     })
 
-    insertHtml+='</table>';
+    insertHtml += '</table>';
     return insertHtml;
 }
-var insertObjs="";
-if(getJson.length>1){
-    $.each(getJson,function (a,b) {
-        if(a==0){
-            insertObjs=insertNode([getJson[a]]);
-        }else{
+
+var insertObjs = "";
+if (getJson.length > 1) {
+    $.each(getJson, function (a, b) {
+        if (a == 0) {
+            insertObjs = insertNode([getJson[a]]);
+        } else {
             nextJson.push(getJson[a])
         }
     })
-}else{
-    insertObjs=insertNode(getJson);
+} else {
+    insertObjs = insertNode(getJson);
 }
 
-$('.pedigreeDetail').html(insertObjs)
+$('.pedigreeDetail').html(insertObjs);
+fixTopLeft($(".pedigreeDetail"));
+pageToImg();
 
-
-var initNum=0;
-$(document).on('keydown',function(e){
-    if(e.keyCode==39||e.keyCode==40){
+var initNum = 0;
+$(document).on('keydown', function (e) {
+    if (e.keyCode == 39 || e.keyCode == 40) {
         initNum++;
         $('.pdNodeCont').removeClass('active');
-        $('.pdNodeCont:eq('+initNum+')').addClass('active');
-        fixTopLeft($('.pedigreeDetail'),$('.pdNodeCont:eq('+initNum+')').offset().left,$('.pdNodeCont:eq('+initNum+')').offset().top)
+        $('.pdNodeCont:eq(' + initNum + ')').addClass('active');
+        fixTopLeft($('.pedigreeDetail'), $('.pdNodeCont:eq(' + initNum + ')').offset().left, $('.pdNodeCont:eq(' + initNum + ')').offset().top)
     }
-    if(e.keyCode==37||e.keyCode==38){
+    if (e.keyCode == 37 || e.keyCode == 38) {
         initNum--;
         $('.pdNodeCont').removeClass('active');
-        $('.pdNodeCont:eq('+initNum+')').addClass('active');
+        $('.pdNodeCont:eq(' + initNum + ')').addClass('active');
 
-        fixTopLeft($('.pedigreeDetail'),$('.pdNodeCont:eq('+initNum+')').offset().left,$('.pdNodeCont:eq('+initNum+')').offset().top)
+        fixTopLeft($('.pedigreeDetail'), $('.pdNodeCont:eq(' + initNum + ')').offset().left, $('.pdNodeCont:eq(' + initNum + ')').offset().top)
 
     }
 })
 
 
+$('.pdNodeCont:eq(' + initNum + ')').addClass('active');
 
-$('.pdNodeCont:eq('+initNum+')').addClass('active');
 /*//双击修改内容，和移动冲突
 $('.pedigreeDetail').on('dblclick','.pdNodeName',function(){
     var $this=$(this);
@@ -167,22 +172,24 @@ $('.pedigreeDetail').on('dblclick','.pdNodeName',function(){
         })
     }
 })*/
+
+/*移动修正*/
 function fixTopLeft($obj, left, top) {
     $('.pedigreeDetail').css({
-        height: bp.graphLimit.height+800,
-        width: bp.graphLimit.width+1600
+        height: bp.graphLimit.height + 800,
+        width: bp.graphLimit.width + 1600
     });
-    if(!$.tool.isEmpty(left)){
-        if(left>$(window).width()/2||left<0){
-            var turn=left-$(window).width()/2;
-            $obj.css('left',parseFloat($obj.css('left'))-turn/(scaleBase/20));
+    if (!$.tool.isEmpty(left)) {
+        if (left > $(window).width() / 2 || left < 0) {
+            var turn = left - $(window).width() / 2;
+            $obj.css('left', parseFloat($obj.css('left')) - turn / (scaleBase / 20));
         }
     }
 
-    if(!$.tool.isEmpty(top)){
-        if(top>$(window).height()/2||top<0){
-            var turn=top-$(window).height()/2;
-            $obj.css('top',parseFloat($obj.css('top'))-turn/(scaleBase/20));
+    if (!$.tool.isEmpty(top)) {
+        if (top > $(window).height() / 2 || top < 0) {
+            var turn = top - $(window).height() / 2;
+            $obj.css('top', parseFloat($obj.css('top')) - turn / (scaleBase / 20));
         }
     }
 
@@ -196,37 +203,22 @@ function fixTopLeft($obj, left, top) {
         $obj.css('top', outHeight);
     }
 
-    if (parseFloat($obj.css('left'))  <= (outWidth+$('.pedigreeConts').width()*(1-scaleBase/20))) {
-        $obj.css('left', outWidth+$('.pedigreeConts').width()*(1-scaleBase/20));
+    if (parseFloat($obj.css('left')) <= (outWidth + $('.pedigreeConts').width() * (1 - scaleBase / 20))) {
+        $obj.css('left', outWidth + $('.pedigreeConts').width() * (1 - scaleBase / 20));
     }
     //设置下、右边距
     $('.LineageTitle').css("left", $obj.css("left"));
+
+
+    fixThumbnail();
 }
 
 
 jQuery(function () {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     $(window).resize(function () {
         fixTopLeft($(".pedigreeDetail"))
     })
-
-
-
-
 
     $('.pedigreeConts').on('mousewheel', function (event) {
         event.preventDefault();
@@ -238,8 +230,7 @@ jQuery(function () {
         }
         if (scaleBase >= 40) scaleBase = 40;
         if (scaleBase <= 10) scaleBase = 10;
-        console.log(scaleBase / 20);
-        fixTopLeft($(".pedigreeDetail"))
+        fixTopLeft($(".pedigreeDetail"));
         $(this).css('transform', 'scale(' + scaleBase / 20 + ')');
 
     });
@@ -254,9 +245,118 @@ jQuery(function () {
         },//移动中的回调函数
         cbEnd: function (a, b, c) {
             console.log(a, b, c)
+            fixThumbnailBG('bg');
         }//移动结束时候的回调函数
     });
 
+    $(".movePath").Tdrag({
+        cbStart: function (a, b, c) {
+            console.log(a, b, c)
+        },//移动前的回调函数
+        cbMove: function (a, b, c) {
+            console.log(a, b, c)
+            var $outWidth=parseFloat($('.thumbnail').css('width'));
+            var $outHeight=parseFloat($('.thumbnail').css('height'));
+            var $obj=$('.movePath');
+            var $imgObj=$('#thumbnailImg');
+            var $left=parseFloat($obj.css('left'));
+            var $top=parseFloat($obj.css('top'));
+            var $width=parseFloat($obj.css('width'));
+            var $height=parseFloat($obj.css('height'));
+
+            if($left>=0)$left=0;
+            if($top>=(40/15))$top=40/15;
+
+            if($left<=$outWidth-$width)$left=$outWidth-$width;
+            if($top<=$outHeight-$height)$top=$outHeight-$height;
+
+            $obj.css({
+                top:$top,
+                left:$left
+            });
+            $('#thumbnailImg').css({
+                top:$top,
+                left:$left
+            });
 
 
+        },//移动中的回调函数
+        cbEnd: function (a, b, c) {
+            console.log(a, b, c)
+
+
+            var $outWidth=parseFloat($('.thumbnail').css('width'));
+            var $outHeight=parseFloat($('.thumbnail').css('height'));
+            var $obj=$('.movePath');
+            var $imgObj=$('#thumbnailImg');
+            var $left=parseFloat($obj.css('left'));
+            var $top=parseFloat($obj.css('top'));
+            var $width=parseFloat($obj.css('width'));
+            var $height=parseFloat($obj.css('height'));
+
+            if($left>=0)$left=0;
+            if($top>=(40/15))$top=40/15;
+
+            if($left<=$outWidth-$width)$left=$outWidth-$width;
+            if($top<=$outHeight-$height)$top=$outHeight-$height;
+
+            $obj.css({
+                top:$top,
+                left:$left
+            });
+            $('#thumbnailImg').css({
+                top:$top,
+                left:$left
+            });
+
+            $('.pedigreeDetail').css({
+                top:parseFloat($top)*baseTmNum,
+                left:parseFloat($left)*baseTmNum
+            });
+        }//移动结束时候的回调函数
+    });
+    
 });
+
+/*缩略图生成*/
+var baseTmNum=15;
+
+/*修正缩略图*/
+function fixThumbnail(){
+    $("#thumbnailImg,.movePath").css({
+        width: $(".pedigreeDetail").width()/baseTmNum,
+        height: $(".pedigreeDetail").height()/baseTmNum,
+        top:40/baseTmNum
+    });
+    $('.moveSelects').css({
+        width: $(window).width()/baseTmNum/(scaleBase/20),
+        height: $(window).height()/baseTmNum/(scaleBase/20)
+    });
+}
+
+/*修正缩略图*/
+function fixThumbnailBG(moveType){
+    if(moveType=="bg"){
+        $("#thumbnailImg").css({
+            top: parseFloat($(".pedigreeDetail").css('top'))/baseTmNum,
+            left: parseFloat($(".pedigreeDetail").css('left'))/baseTmNum
+        });
+    }
+}
+
+function pageToImg() {
+    var pageCanvas = document.querySelector("#thumbnailCanvas");
+    html2canvas(document.querySelector(".pedigreeDetail"), {
+        canvas: pageCanvas,
+
+    }).then(function(canvas) {
+
+        var dataUrl = canvas.toDataURL();
+
+        $("#thumbnailImg").attr('src',dataUrl);
+
+        fixThumbnail();
+
+    });
+
+}

@@ -67,7 +67,7 @@
                 self._end = false;
                 self.disX = 0;
                 self.disY = 0;
-                self.zIndex=1000;
+                self.zIndex=100;
                 self.moving=false;
                 self.moves="";
 
@@ -158,7 +158,7 @@
                 var oEvent = ev || event;
                 self.disX = oEvent.clientX - obj.offsetLeft;
                 self.disY = oEvent.clientY - obj.offsetTop;
-                $(obj).css("zIndex",self.zIndex++);
+                $(obj).css("zIndex",self.zIndex);
                 self.options.cbStart();
             },
             move: function (ev, obj) {
