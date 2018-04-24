@@ -86,13 +86,13 @@ function insertNode(data) {
         insertHtml += '<tr class="">'
         //当前节点信息
         insertHtml += '<td class="rootPdNode">' +
-            '<div class="pdNodeCont">' +
-            '<div class="pdNodeSexLive"><img class="" src="'+(data.nodeX%2==1?'img/men.png':'img/women.png')+'" alt=""></div>' +
+            '<div class="pdNodeCont" tdata=\''+JSON.stringify(nodeY)+'\'>' +
+            '<div class="pdNodeSexLive"><img class="pdNodeSexImg"  src="'+(nodeY.NODE_SEX=="0"?'img/men':'img/women')+(nodeY.NODE_LIFE_FLAG=="0"?"":"-die")+'.png" alt=""></div>' +
             '<div class="pdNodeName">' + nodeY.NODE_NAME +
             '</div>' +
             '<div class="pdNodeMoreShow"></div>' +
             '<div class="pdNodeOpenClose">' +
-            '<img src="img/close-child.png" alt="">' +
+            '<img src="img/close-child.png" class="pdNodeOpenControl" alt="">' +
             '</div>' +
             '<div class="pdNodeSpouse">' +
             '</div>' +
@@ -105,7 +105,7 @@ function insertNode(data) {
         }
         insertHtml += '</td>'
         insertHtml += '</tr>'
-    })
+    });
 
     insertHtml += '</table>';
     return insertHtml;
@@ -125,6 +125,13 @@ if (getJson.length > 1) {
 }
 
 $('.pedigreeDetail').html(insertObjs);
+
+$('.pdNodeCont').each(function(da,db){
+    $(db).data('node',JSON.parse($(db).attr('tdata')))
+    $(db).removeAttr('tdata');
+})
+
+
 fixTopLeft($(".pedigreeDetail"));
 pageToImg();
 
@@ -254,7 +261,7 @@ jQuery(function () {
             console.log(a, b, c)
         },//移动前的回调函数
         cbMove: function (a, b, c) {
-            console.log(a, b, c)
+
             var $outWidth=parseFloat($('.thumbnail').css('width'));
             var $outHeight=parseFloat($('.thumbnail').css('height'));
             var $obj=$('.movePath');
@@ -263,10 +270,8 @@ jQuery(function () {
             var $top=parseFloat($obj.css('top'));
             var $width=parseFloat($obj.css('width'));
             var $height=parseFloat($obj.css('height'));
-
             if($left>=0)$left=0;
             if($top>=(40/15))$top=40/15;
-
             if($left<=$outWidth-$width)$left=$outWidth-$width;
             if($top<=$outHeight-$height)$top=$outHeight-$height;
 
@@ -278,12 +283,9 @@ jQuery(function () {
                 top:$top,
                 left:$left
             });
-
 
         },//移动中的回调函数
         cbEnd: function (a, b, c) {
-            console.log(a, b, c)
-
 
             var $outWidth=parseFloat($('.thumbnail').css('width'));
             var $outHeight=parseFloat($('.thumbnail').css('height'));
@@ -293,13 +295,10 @@ jQuery(function () {
             var $top=parseFloat($obj.css('top'));
             var $width=parseFloat($obj.css('width'));
             var $height=parseFloat($obj.css('height'));
-
             if($left>=0)$left=0;
             if($top>=(40/15))$top=40/15;
-
             if($left<=$outWidth-$width)$left=$outWidth-$width;
             if($top<=$outHeight-$height)$top=$outHeight-$height;
-
             $obj.css({
                 top:$top,
                 left:$left
@@ -308,7 +307,6 @@ jQuery(function () {
                 top:$top,
                 left:$left
             });
-
             $('.pedigreeDetail').css({
                 top:parseFloat($top)*baseTmNum,
                 left:parseFloat($left)*baseTmNum
@@ -345,15 +343,10 @@ function fixThumbnailBG(moveType){
 }
 
 function pageToImg() {
-    var pageCanvas = document.querySelector("#thumbnailCanvas");
+    var pageCanvas = document.querySelector("#thumbnailImg");
     html2canvas(document.querySelector(".pedigreeDetail"), {
         canvas: pageCanvas,
-
     }).then(function(canvas) {
-
-        var dataUrl = canvas.toDataURL();
-
-        $("#thumbnailImg").attr('src',dataUrl);
 
         fixThumbnail();
 
